@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<title>Kuiz – 17 Shkurti</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    font-family:'Montserrat',sans-serif;
+    background:#0b1c2d;
+    color:#222;
+}
+.wrapper{
+    max-width:820px;
+    margin:40px auto;
+    background:#f4f6f9;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 15px 35px rgba(0,0,0,0.4);
+}
+.banner{
+    background:linear-gradient(135deg,#0d47a1,#c9a227);
+    color:white;
+    padding:30px;
+    text-align:center;
+}
+.banner h1{
+    font-family:'Cinzel',serif;
+    font-size:26px;
+    margin:0;
+}
+.header{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    padding:25px;
+    background:#ffffff;
+}
+.header img{
+    width:100px;
+}
+.header-text h2{
+    font-family:'Cinzel',serif;
+    color:#0d47a1;
+    margin:0;
+}
+.header-text p{
+    margin:5px 0;
+    font-size:14px;
+}
+.content{
+    padding:30px;
+}
+.page{display:none}
+.page.active{display:block}
+.card{
+    background:white;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 8px 18px rgba(0,0,0,0.15);
+}
+.timer{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:#c9a227;
+    color:#0b1c2d;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:16px;
+    margin:0 auto 20px;
+}
+h3{text-align:center}
+label{
+    display:block;
+    background:#eef2f7;
+    padding:10px;
+    border-radius:10px;
+    margin:8px 0;
+    cursor:pointer;
+}
+input[type=radio]{margin-right:8px}
+.buttons{
+    text-align:center;
+    margin-top:20px;
+}
+button{
+    padding:10px 26px;
+    border:none;
+    border-radius:25px;
+    font-size:15px;
+    cursor:pointer;
+}
+.next{background:#0d47a1;color:white}
+.back{background:#777;color:white}
+input[type=text]{
+    width:70%;
+    padding:12px;
+    font-size:16px;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+.medal{
+    font-size:36px;
+    text-align:center;
+    margin:15px 0;
+}
+.footer{
+    background:#ffffff;
+    padding:25px;
+    border-top:3px solid #c9a227;
+    font-size:14px;
+    text-align:center;
+    line-height:1.6;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+th,td{
+    padding:8px;
+    border:1px solid #ccc;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<div class="banner">
+<h1>Kuiz për nder të 17 Shkurtit – Pavarësisë së Kosovës</h1>
+</div>
+
+<div class="header">
+<img src="xhb.png">
+<div class="header-text">
+<h2>SHFMU "XHEVAT BERISHA" – PRIZREN</h2>
+<p>Punuar nga nxënësit e klasës VII-1 dhe VII-2</p>
+</div>
+</div>
+
+<div class="content">
+
+<div class="page active card">
+<h3>Shkruaje emrin për të hyrë në kuiz</h3>
+<center>
+<input type="text" id="name" placeholder="Emri dhe mbiemri">
+<br><br>
+<button class="next" onclick="start()">Fillo</button>
+</center>
+</div>
+
+<div id="quiz"></div>
+
+<div class="page card">
+<h3 id="resultText"></h3>
+<div class="medal" id="medal"></div>
+<div class="buttons">
+<button class="next" onclick="showResults()">Shfaq rezultatet</button>
+</div>
+</div>
+
+<div class="page card">
+<h3>Rezultatet e nxënësve</h3>
+<table>
+<tr><th>Emri</th><th>Pikët</th></tr>
+<tbody id="table"></tbody>
+</table>
+</div>
+
+</div>
+
+<div class="footer">
+<p>
+Ky kuiz është krijuar në bashkëpunim me arsimtaren e lëndës TIK,<br>
+<strong>Bledina Berisha</strong>.
+</p>
+<p>
+Falënderojmë drejtoreshën e shkollës,<br>
+<strong>Mimoze Duraj</strong>, për përkrahjen e vazhdueshme dhe mbështetjen
+në zhvillimin dhe arritjet e nxënësve.
+</p>
+</div>
+
+</div>
+
+<script>
+const questions=[
+["Kur u shpall Pavarësia e Kosovës?",["28 Nëntor 1912","17 Shkurt 2008","12 Qershor 1999"],1],
+["Në cilin qytet u shpall Pavarësia e Kosovës?",["Prishtinë","Prizren","Pejë"],0],
+["Në cilin vit u shpall Pavarësia e Kosovës?",["1999","2008","2010"],1],
+["Sa deputetë votuan pro Pavarësisë?",["100","109","120"],1],
+["Cili dokument u miratua më 17 Shkurt?",["Kushtetuta","Deklarata e Pavarësisë","Ligji"],1],
+["Kush ishte kryeministër në 2008?",["Hashim Thaçi","Isa Mustafa","Ramush Haradinaj"],0],
+["Cila organizatë administroi Kosovën?",["UNMIK","NATO","OSBE"],0],
+["Sa shtete e njohën Kosovën në vitin e parë?",["20","50","100"],1],
+["Ku u shpall Pavarësia?",["Kuvendi","Qeveria","Teatri"],0],
+["Pas shpërbërjes së cilit shteti u shpall Pavarësia e Kosovës?",["Jugosllavisë","Serbisë","Shqipërisë"],0]
+];
+
+let name="",score=0,timer,seconds=180;
+
+function start(){
+    name=document.getElementById("name").value;
+    if(!name){alert("Shkruaje emrin!");return;}
+    const quiz=document.getElementById("quiz");
+
+    questions.forEach((q,i)=>{
+        let html=`<div class="page card">
+        <div class="timer" id="timer${i}">03:00</div>
+        <h3>${name}, ${q[0]}</h3>`;
+        q[1].forEach((a,j)=>{
+            html+=`<label><input type="radio" name="q${i}" value="${j}">${a}</label>`;
+        });
+        html+=`
+        <div class="buttons">
+        <button class="back" onclick="show(${i})">Kthehu</button>
+        <button class="next" onclick="next(${i})">Vazhdo</button>
+        </div></div>`;
+        quiz.innerHTML+=html;
+    });
+    show(1);
+}
+
+function startTimer(i){
+    clearInterval(timer);
+    seconds=180;
+    timer=setInterval(()=>{
+        seconds--;
+        let m=Math.floor(seconds/60);
+        let s=seconds%60;
+        document.getElementById("timer"+i).innerText=
+        `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        if(seconds<=0){clearInterval(timer);next(i);}
+    },1000);
+}
+
+function next(i){
+    if(i===questions.length-1){finish();return;}
+    show(i+2);
+}
+
+function finish(){
+    clearInterval(timer);
+    score=0;
+    questions.forEach((q,i)=>{
+        let a=document.querySelector('input[name="q'+i+'"]:checked');
+        if(a && +a.value===q[2]) score+=10;
+    });
+
+    let medal="🥉 Medalje Bronz";
+    if(score>=80) medal="🏅 Medalje e Artë";
+    else if(score>=60) medal="🥈 Medalje e Argjendtë";
+
+    document.getElementById("resultText").innerText=
+    `${name}, ke fituar ${score} pikë nga 100`;
+    document.getElementById("medal").innerText=medal;
+
+    let data=JSON.parse(localStorage.getItem("results"))||[];
+    data.push({name,score});
+    localStorage.setItem("results",JSON.stringify(data));
+
+    show(questions.length+1);
+}
+
+function showResults(){
+    let data=JSON.parse(localStorage.getItem("results"))||[];
+    let t=document.getElementById("table");
+    t.innerHTML="";
+    data.forEach(r=>{
+        t.innerHTML+=`<tr><td>${r.name}</td><td>${r.score}</td></tr>`;
+    });
+    show(questions.length+2);
+}
+
+function show(n){
+    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+    document.querySelectorAll(".page")[n].classList.add("active");
+    if(n>0 && n<=questions.length) startTimer(n-1);
+}
+</script>
+
+</body>
+</html>
